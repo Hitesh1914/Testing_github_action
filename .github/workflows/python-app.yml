@@ -1,0 +1,37 @@
+name: Python CI
+
+# This workflow will install Python, install dependencies, run flake8 for linting,
+# and run pytest for testing.
+
+#Trigger the workflow on push or pull request events to the main branch
+on:
+  push:
+    branches: [ "main" ]                                       # Events like push, pull, merge, delete, etc.Trigger workflow
+  pull_request:
+    branches: [ "main" ]
+
+
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest    # Container to run the job in, can be ubuntu-latest, windows-latest, macos-latest, etc.
+
+    steps:
+    # Step 1: check out the code from the repository
+    - name: Check out code
+      uses: actions/checkout@v4
+    # Step 2: set up Python 3.10
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+    # Step 3: install dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    # Step 4: run tests 
+    - name: Test with pytest
+      run: |
+        pytest
